@@ -35,7 +35,7 @@ Un système robuste pour détecter des tableaux dans des images de documents com
 ```bash
 # Cloner le repository
 git clone https://github.com/micpostyam/simple_table_detector.git
-cd simpe_table_detector
+cd simple_table_detector
 
 # Créer un environnement virtuel
 python -m venv venv
