@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détecteur de Tableaux</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Détecteur de Tableaux</h1>
+            <p>Détection automatique de tableaux dans vos images</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-content">
+                        <span class="material-icons">cloud_upload</span>
+                        <p>Glissez vos images ici ou</p>
+                        <button class="upload-btn" id="uploadBtn">Sélectionnez des fichiers</button>
+                        <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
+                    </div>
+                </div>
+                <div class="settings">
+                    <label>
+                        <span>Seuil de confiance:</span>
+                        <input type="range" id="confidenceSlider" min="0" max="100" value="70">
+                        <span id="confidenceValue">0.70</span>
+                    </label>
+                    <label>
+                        <input type="checkbox" id="visualizeCheckbox">
+                        <span>Visualiser les détections</span>
+                    </label>
+                </div>
+                <button class="analyze-btn" id="analyzeBtn" disabled>
+                    <span class="material-icons">search</span>
+                    Analyser
+                </button>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2>Résultats</h2>
+                <div class="results-grid" id="resultsGrid"></div>
+            </div>
+        </main>
+
+        <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+            <div class="loading-spinner"></div>
+            <p>Analyse en cours...</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

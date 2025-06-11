@@ -1,0 +1,213 @@
+:root {
+    --primary-color: #2196F3;
+    --primary-dark: #1976D2;
+    --error-color: #f44336;
+    --success-color: #4CAF50;
+    --text-color: #333;
+    --background-color: #f5f5f5;
+    --card-background: #ffffff;
+    --border-radius: 8px;
+    --spacing: 20px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing);
+}
+
+header {
+    text-align: center;
+    margin-bottom: calc(var(--spacing) * 2);
+}
+
+header h1 {
+    color: var(--primary-color);
+    margin-bottom: 8px;
+}
+
+.upload-section {
+    background: var(--card-background);
+    padding: var(--spacing);
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.drop-zone {
+    border: 2px dashed #ccc;
+    border-radius: var(--border-radius);
+    padding: calc(var(--spacing) * 2);
+    text-align: center;
+    transition: border-color 0.3s ease;
+    margin-bottom: var(--spacing);
+}
+
+.drop-zone.drag-over {
+    border-color: var(--primary-color);
+    background-color: rgba(33, 150, 243, 0.05);
+}
+
+.drop-zone .material-icons {
+    font-size: 48px;
+    color: var(--primary-color);
+    margin-bottom: var(--spacing);
+}
+
+.upload-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.upload-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+.settings {
+    margin: var(--spacing) 0;
+    display: flex;
+    gap: var(--spacing);
+    flex-wrap: wrap;
+}
+
+.settings label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.analyze-btn {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.analyze-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.analyze-btn:not(:disabled):hover {
+    background-color: var(--primary-dark);
+}
+
+.results-section {
+    margin-top: calc(var(--spacing) * 2);
+}
+
+.results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--spacing);
+    margin-top: var(--spacing);
+}
+
+.result-card {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    padding: var(--spacing);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    display: flex;
+    gap: var(--spacing);
+    margin-bottom: var(--spacing);
+}
+
+.thumbnail,
+.visualization {
+    flex: 1;
+    min-width: 0;
+}
+
+.thumbnail img,
+.visualization img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    border-radius: calc(var(--border-radius) / 2);
+    border: 1px solid #eee;
+    background-color: #f8f8f8;
+}
+
+.detection-info {
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.detection-info .label {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: var(--spacing);
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    color: var(--error-color);
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    background-color: rgba(244, 67, 54, 0.1);
+}
+
+.success {
+    color: var(--success-color);
+    font-weight: bold;
+}
