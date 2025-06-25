@@ -1,0 +1,13 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Copie des fichiers du frontend
+COPY frontend/ frontend/
+COPY serve_frontend.py .
+
+# Exposition du port
+EXPOSE 3000
+
+# Commande de démarrage
+CMD ["python", "serve_frontend.py", "--host", "0.0.0.0", "--port", "3000"]

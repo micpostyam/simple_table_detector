@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.venv/
+
+# Docker
+.docker/
+
+# Git
+.git
+.gitignore
+
+# VS Code
+.vscode/
+
+# Misc
+.DS_Store
+*.log
+*.sqlite3
+.env
+.env.*
+
+# Project specific
+static/visualizations/*
+htmlcov/
+.coverage
+.pytest_cache/

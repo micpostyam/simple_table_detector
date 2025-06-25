@@ -1,0 +1,123 @@
+# Workflow d'Intégration Continue (CI)
+# Ce pipeline automatise les tests, la compilation et la validation du code
+name: CI
+
+# 🔄 Déclencheurs du workflow
+# Le pipeline s'exécute automatiquement dans ces situations :
+on:
+  push:
+    branches: main  # ✅ À chaque push sur la branche main
+  pull_request:
+    branches: main  # 🔀 À chaque Pull Request vers main
+
+# 🛠️ Jobs du pipeline CI
+jobs:
+  # Job principal : construction et tests
+  build-and-test:
+    # 🖥️ Environnement d'exécution : Ubuntu dernière version
+    runs-on: ubuntu-latest
+    
+    # 🐳 Services nécessaires (conteneurs Docker)
+    services:
+      docker:
+        # Service Docker-in-Docker pour construire des images dans le pipeline
+        image: docker:24.0.7-dind
+    
+    # 📋 Étapes d'exécution du job
+    steps:
+      # 📥 ÉTAPE 1: Récupération du code source
+      - name: Checkout code
+        uses: actions/checkout@v4  # Action officielle GitHub pour cloner le repo
+        # Cette étape télécharge tout le code du repository dans l'environnement CI
+
+      # 🐍 ÉTAPE 2: Configuration de l'environnement Python
+      - name: Set up Python
+        uses: actions/setup-python@v5  # Action officielle pour installer Python
+        with:
+          python-version: '3.11'  # Version Python spécifique pour la cohérence
+        # Assure que tous les builds utilisent la même version Python
+
+      # 📦 ÉTAPE 3: Installation des dépendances Python
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip  # 🔄 Mise à jour de pip
+          pip install -r requirements.txt     # 📋 Installation des dépendances du projet
+        # Cette étape prépare l'environnement avec toutes les librairies nécessaires
+
+      # 🔍 ÉTAPE 4: Analyse statique du code (Linting)
+      - name: Lint with flake8
+        run: |
+          pip install flake8  # 🛠️ Installation de l'outil de linting
+          # 🔍 Analyse du code pour détecter les erreurs critiques :
+          # E9: erreurs de syntaxe, F63: erreurs d'import, F7: erreurs logiques, F82: variables non définies
+          flake8 src/ tests/ --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Le linting vérifie la qualité du code sans l'exécuter
+
+      # 🧪 ÉTAPE 5: Exécution des tests unitaires
+      - name: Run tests
+        run: |
+          pip install pytest  # 🧪 Installation du framework de test
+          # Exécution des tests avec options :
+          # --maxfail=1: arrêt au premier échec
+          # --disable-warnings: masque les avertissements
+          # --tb=short: format concis pour les erreurs
+          pytest --maxfail=1 --disable-warnings --tb=short
+        # Les tests valident que le code fonctionne comme attendu
+
+      # 🐳 ÉTAPE 6: Construction de l'image Docker de l'API
+      - name: Build API Docker image
+        run: |
+          # Construction de l'image Docker pour l'API backend
+          docker build -f Dockerfile.api -t table-detector-api .
+        # Vérifie que l'API peut être conteneurisée correctement
+
+      # 🐳 ÉTAPE 7: Construction de l'image Docker du Frontend
+      - name: Build Frontend Docker image
+        run: |
+          # Construction de l'image Docker pour le frontend
+          docker build -f Dockerfile.frontend -t table-detector-frontend .
+        # Vérifie que le frontend peut être conteneurisé correctement
+
+      # 🚀 ÉTAPE 8: Test d'intégration avec Docker Compose (Smoke Test)
+      - name: Docker Compose up (smoke test)
+        run: |
+          # 🚀 Démarrage de l'application complète
+          docker compose up -d --build
+          # ⏱️ Attente pour que les services démarrent
+          sleep 10
+          # 📊 Vérification du statut des conteneurs
+          docker compose ps
+          # 📋 Affichage des logs pour diagnostic
+          docker compose logs api
+          docker compose logs frontend
+        # Ce test vérifie que l'application complète peut démarrer
+
+      # 🏥 ÉTAPE 9: Vérification de la santé de l'API
+      - name: Check API health
+        run: |
+          # 🔍 Test de l'endpoint de documentation de l'API
+          # --fail fait échouer la commande si l'HTTP status n'est pas 2xx
+          curl --fail http://localhost:8000/docs
+        # Vérifie que l'API répond correctement aux requêtes HTTP
+
+      # 🧹 ÉTAPE 10: Nettoyage (toujours exécutée)
+      - name: Tear down
+        if: always()  # 🔄 Cette étape s'exécute même si les précédentes échouent
+        run: |
+          # 🛑 Arrêt et suppression de tous les conteneurs
+          docker compose down
+        # Nettoie l'environnement pour éviter les conflits futurs
+
+# 📊 Résumé du pipeline CI :
+# 1. 📥 Récupération du code
+# 2. 🐍 Configuration Python
+# 3. 📦 Installation des dépendances
+# 4. 🔍 Vérification qualité du code (linting)
+# 5. 🧪 Tests unitaires
+# 6. 🐳 Construction images Docker
+# 7. 🚀 Test d'intégration complet
+# 8. 🏥 Vérification santé API
+# 9. 🧹 Nettoyage
+
+# ✅ Si toutes les étapes passent = code prêt pour la production
+# ❌ Si une étape échoue = problème à corriger avant merge

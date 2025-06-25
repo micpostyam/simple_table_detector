@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <header>
-            <h1>Détecteur de Tableaux</h1>
+            <h1>🔍 Détecteur de Tableaux</h1>
             <p>Détection automatique de tableaux dans vos images</p>
         </header>
 
@@ -24,6 +24,12 @@
                         <input type="file" id="fileInput" multiple accept="image/*" style="display: none;">
                     </div>
                 </div>
+                
+                <div class="selected-files" id="selectedFiles" style="display: none;">
+                    <h3>Images sélectionnées (<span id="fileCount">0</span>)</h3>
+                    <div class="selected-files-grid" id="selectedFilesGrid"></div>
+                </div>
+                
                 <div class="settings">
                     <label>
                         <span>Seuil de confiance:</span>
@@ -31,10 +37,11 @@
                         <span id="confidenceValue">0.70</span>
                     </label>
                     <label>
-                        <input type="checkbox" id="visualizeCheckbox">
+                        <input type="checkbox" id="visualizeCheckbox" checked>
                         <span>Visualiser les détections</span>
                     </label>
                 </div>
+                
                 <button class="analyze-btn" id="analyzeBtn" disabled>
                     <span class="material-icons">search</span>
                     Analyser
@@ -42,7 +49,7 @@
             </div>
 
             <div class="results-section" id="resultsSection" style="display: none;">
-                <h2>Résultats</h2>
+                <h2>📊 Résultats</h2>
                 <div class="results-grid" id="resultsGrid"></div>
             </div>
         </main>

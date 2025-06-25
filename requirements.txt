@@ -22,6 +22,10 @@ flake8>=6.0.0
 python-dotenv>=1.0.0
 tqdm>=4.65.0
 requests>=2.31.0
+# Optional dependencies
+uvicorn>=0.22.0  # For serving the model
+fastapi>=0.103.0  # For building APIs
+python-multipart>=0.0.6  # For handling file uploads
 
 # Optional GPU support
 --extra-index-url https://download.pytorch.org/whl/cpu
